@@ -5,13 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timer</title>
+    <script src="https://kit.fontawesome.com/8e3a662c3c.js" crossorigin="anonymous"></script>
+    <script src="timer.js" defer></script>
     <script src="app.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+    </link>
 </head>
 
 <body>
-    <input id="duration" value="30">
-    <button id="start">Start</button>
-    <button id="pause">Pause</button>
+    <!--- Rules for SVG  
+    We need to add a height and a width
+    The svg is like a canvas
+    We need to understand the axis
+    origin is top left
+    x left to right
+    y top to bottom
+    We rarely use negative values 
+    cx and cy are the placement of the cicrle
+    r is radius
+    There are two parts fill and stroke
+    c = 2 * 90 * pi
+    Border always starts at the right and travels clockwise
+    -->
+    <div class="timer">
+        <div class="controls">
+            <input id="duration" value="30">
+            <div>
+                <button id="start"><i class="fa-solid fa-play"></i></button>
+                <button id="pause"><i class="fa-solid fa-pause"></i></button>
+            </div>
+        </div>
+        <svg class="dial" height="400" width="400">
+            <circle r="190" cx="200" cy="200" fill="transparent" stroke="green" stroke-width="10"
+                transform="rotate(-90 200 200)"></circle>
+        </svg>
+    </div>
+
+
 </body>
 
 </html>

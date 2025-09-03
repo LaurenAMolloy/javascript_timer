@@ -42,84 +42,33 @@ console.log("HI THERE");
 //We do not need an event listener
 //Storing data in the dom
 
-class Timer {
-    //special function that is called automatically
-    //When a new timer is created
-    //Timer class is going to listen to those events
-    constructor(durationInput, startBtn, pauseBtn) {
-        //assign to instance variables
-        this.durationInput = durationInput;
-        this.startBtn = startBtn;
-        this.pauseBtn = pauseBtn;
-
-        //add event listener to the start button
-        //bind event listeners to our elements
-        this.startBtn.addEventListener("click", this.start);
-        this.pauseBtn.addEventListener("click", this.pause);
-    }
-    //This arrow function is moved into the constructor under the hood so it solves our problem
-    start = () => {
-        //The value of this is the button!
-        //It has been overwritten
-        //console.log(this);
-        //Call .tick every second
-        this.tick();
-        this.intervalId = setInterval(this.tick, 1000);
-        
-    };
-
-    pause = () => {
-        //get the timer variable
-        console.log("paused")
-        clearInterval(this.intervalId);
-    };
-
-    //tick method
-    //what do we want to run every second?
-    tick = () => {
-        if (this.timeRemaining <= 0){
-            this.pause();
-        } else {
-            this.timeRemaining = timeRemaining - 1;
-        }
-        //console.log("tick");
-        //look into the dom
-        //decrease the value
-        //pull the value and get a number not a string
-        //This is our one source of truth
-        // const timeRemaining = parseFloat(this.durationInput.value);
-        //The right hand side if this expression is the argument for the setter
-        //this.timeRemaining = timeRemaining - 1;
-        //console.log(timeRemaining)
-    }
-
-    //this is treated like an instance variable
-    //we don't have to call a mathod when we do this
-    //it makes it clear to other engineers we are just getting value from a variable
-    //We have hidden the complexity
-    get timeRemaining() {
-        return parseFloat(this.durationInput.value);
-    }
-
-    set timeRemaining(time) {
-        this.durationInput.value = time
-    }
-
-    //getters and setters
-    // getTime(){
-    //     return parseFloat(this.durationInput.value)
-    // }
-    // setTime (time){
-    //     this.durationInput.value = time;
-    // }
-}
-
 const durationInput = document.querySelector("#duration");
 const startBtn = document.querySelector("#start");
 const pauseBtn = document.querySelector("#pause");
+const circle = document.querySelector("circle");
+const circumference = circle.getAttribute("r") * 2 * Math.PI;
+circle.setAttribute('stroke-dasharray', circumference);
 
+//Pass in Optional callBacks
+//Options object with hooks to update the border animation
+let currentOffset = 0;
+let duration;
+const timer = new Timer(durationInput, startBtn, pauseBtn, {
+onStart(totalDuration){
+    //console.log('Timer starts');
+    duration = totalDuration;
+},
+onTick(timeRemaining){
+    //console.log("Timer just ticked down");
+    circle.setAttribute('stroke-dashoffset', 
+    circumference * timeRemaining / duration - circumference
+    );
+},
+onComplete(){
+    console.log("Timer completed");
+}
+});
 
-const timer = new Timer(durationInput, startBtn, pauseBtn);
 //timer.start();
 
 //This refers to the window
@@ -151,3 +100,4 @@ const timer = new Timer(durationInput, startBtn, pauseBtn);
 // //copying the method
 // randObject.printColor = colors.printColor;
 // randObject.printColor();
+
